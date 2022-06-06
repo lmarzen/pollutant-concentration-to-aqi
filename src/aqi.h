@@ -5,72 +5,70 @@
 extern "C" {
 #endif
 
-// Useful sites with more information about various aqi scales:
-//  https://en.wikipedia.org/wiki/Air_quality_index
-//  https://atmotube.com/blog/standards-for-air-quality-indices-in-different-countries-aqi
-typedef enum aqi_scale {
-  australia_aqi,       // Australia (AQI)
-  canada_aqhi,         // Canada (AQHI)
-  europe_caqi,         // Europe (CAQI)
-  hong_kong_aqhi,      // Hong Kong (AQHI)
-  india_aqi,           // India (AQI)
-  mainland_china_aqi,  // Mainland China (AQI)
-  singapore_psi,       // Singapore (PSI)
-  south_korea_cai,     // South Korea (CAI)
-  united_kingdom_daqi, // United Kingdom (DAQI)
-  united_states_aqi,   // United States (AQI)
-} aqi_scale_t;
-
-typedef enum pollutant {
-  co,    // μg/m^3, Carbon Monoxide (CO)               1 ppb = 1.1456 μg/m^3
-  nh3,   // μg/m^3, Ammonia (NH3)                      1 ppb = 0.6966 μg/m^3
-  no,    // μg/m^3, Nitric Oxide (NO)                  1 ppb = 1.2274 μg/m^3
-  no2,   // μg/m^3, Nitrogen Dioxide (NO2)             1 ppb = 1.8816 μg/m^3
-  o3,    // μg/m^3, Ground-Level Ozone (O3)            1 ppb = 1.9632 μg/m^3
-  so2,   // μg/m^3, Sulfur Dioxide (SO2)               1 ppb = 2.6203 μg/m^3
-  pm2_5, // μg/m^3, Fine Particulate Matter (<2.5μm)
-  pm10,  // μg/m^3, Coarse Particulate Matter (<10μm)
-} pollutant_t;
-// Note: Concentration (µg/m3) = molecular weight * concentration (ppb) / 24.45
-
-/*
- * Compute Air Quality Index Value
- *
- * Parameters:
- *  The scale determines the standard that will be used to calculate AQI.
- *  Depending on the selected scale different pollutants are required.
- *  This library supports scales that use a subset of the 8 pollutant 
- *  parameters. If a scale does not require a specific pollutant it will be 
- *  ignored. Some scales have pollutants that can be optionally considered,
- *  pass a negative value (ie. -1) for these parameters if you do not want an
- *  optional pollutant to be considered.
- *  All pollutants should be provided as a concentration, in with units μg/m^3.
- *  (see above for conversion factors)
+/* Each AQI scale has a maximum value, above which there is no defined piecewise
+ * function. The way these indexes are commonly denoted is by ">{AQI_MAX}" or 
+ * "{AQI_MAX}+". Note: Minimum AQI for all scales is 0.
  * 
- * Returns the Air Quality Index value, rounded to the nearest integer
+ * Uncomment if you want to make use of these values
+ */
+// #define AUSTRALIA_AQI_MAX       200
+// #define CANADA_AQHI_MAX         10
+// #define EUROPE_CAQI_MAX         100
+// #define HONG_KONG_AQHI_MAX      10
+// #define INDIA_AQI_MAX           400
+// #define MAINLAND_CHINA_AQI_MAX  300
+// #define SINGAPORE_PSI_MAX       400
+// #define SOUTH_KOREA_CAI_MAX     500
+// #define UNITED_KINGDOM_DAQI_MAX 10
+// #define UNITED_STATES_AQI_MAX   500
+
+/* Returns the Air Quality Index, rounded to the nearest integer
  *   -1 is returned if a parameter is invalid.
  * 
- * Usage Example:
- *   Calculating the Europe Common Air Quality Index (europe_caqi)
- *   CAQI requires no2, o3, pm10, and optionally pm2_5
- *   let no2 = 0.7711, o3 = 68.66, pm10 = 0.5404
- *   In this example, we will elect to not consider the optional pm2_5, 
- *   signified with -1.
- *                     scale co nh3 no     no2     o3 so2 pm2_5    pm10
- *   compute_aqi(europe_caqi, 0,  0, 0, 0.7711, 68.66,  0    -1, 0.5404)
+ * All pollutants will be interpreted as a concentration, with units μg/m^3.
+ * Pollutants:
+ *   co    μg/m^3, Carbon Monoxide (CO)               1 ppb = 1.1456 μg/m^3
+ *   nh3   μg/m^3, Ammonia (NH3)                      1 ppb = 0.6966 μg/m^3
+ *   no    μg/m^3, Nitric Oxide (NO)                  1 ppb = 1.2274 μg/m^3
+ *   no2   μg/m^3, Nitrogen Dioxide (NO2)             1 ppb = 1.8816 μg/m^3
+ *   o3    μg/m^3, Ground-Level Ozone (O3)            1 ppb = 1.9632 μg/m^3
+ *   pb    μg/m^3, Lead (Pb)                          1 ppb = 1.9632 μg/m^3
+ *   so2   μg/m^3, Sulfur Dioxide (SO2)               1 ppb = 8.4744 μg/m^3
+ *   pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
+ *   pm10  μg/m^3, Coarse Particulate Matter (<10μm)
+ * Note: Concentration (µg/m^3) = molecular weight * concentration (ppb) / 24.45
+ * 
+ * Useful websites with more information about various aqi scales:
+ * https://en.wikipedia.org/wiki/Air_quality_index
+ * https://atmotube.com/blog/standards-for-air-quality-indices-in-different-countries-aqi
  */
-int compute_aqi(aqi_scale_t scale, 
-                float co, float nh3, float no, float no2, 
-                float o3, float so2, float pm2_5, float pm10);
+int australia_aqi();       // Australia (AQI)
+int canada_aqhi();         // Canada (AQHI)
+int europe_caqi(float no2, float o3, float pm2_5, float pm10);         // Europe (CAQI)
+int hong_kong_aqhi();      // Hong Kong (AQHI)
+int india_aqi();           // India (AQI)
+int mainland_china_aqi();  // Mainland China (AQI)
+int singapore_psi();       // Singapore (PSI)
+int south_korea_cai();     // South Korea (CAI)
+int united_kingdom_daqi(); // United Kingdom (DAQI)
+int united_states_aqi();   // United States (AQI)
 
-/*
- * Returns the descriptor/category of an aqi value.
+/* Returns the descriptor/category of an aqi value.
  * 
  * Usage Example:
- *   aqi_descriptor(united_states_aqi, 52);
+ *   united_states_aqi_desc(52);
  *   returns "Moderate"
  */
-char* aqi_descriptor(aqi_scale_t scale, int aqi);
+char* australia_aqi_desc(int api);
+char* canada_aqhi_desc(int api);
+char* europe_caqi_desc(int api);
+char* hong_kong_aqhi_desc(int api);
+char* india_aqi_desc(int api);
+char* mainland_china_aqi_desc(int api);
+char* singapore_psi_desc(int api);
+char* south_korea_cai_desc(int api);
+char* united_kingdom_daqi_desc(int api);
+char* united_states_aqi_desc(int api);
 
 #ifdef __cplusplus
 }
