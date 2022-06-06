@@ -31,20 +31,24 @@ extern "C" {
  *   nh3   μg/m^3, Ammonia (NH3)                      1 ppb = 0.6966 μg/m^3
  *   no    μg/m^3, Nitric Oxide (NO)                  1 ppb = 1.2274 μg/m^3
  *   no2   μg/m^3, Nitrogen Dioxide (NO2)             1 ppb = 1.8816 μg/m^3
- *   o3    μg/m^3, Ground-Level Ozone (O3)            1 ppb = 1.9632 μg/m^3
+ *   o3    μg/m^3, Ozone (O3)                         1 ppb = 1.9632 μg/m^3
  *   pb    μg/m^3, Lead (Pb)                          1 ppb = 1.9632 μg/m^3
  *   so2   μg/m^3, Sulfur Dioxide (SO2)               1 ppb = 8.4744 μg/m^3
- *   pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
  *   pm10  μg/m^3, Coarse Particulate Matter (<10μm)
+ *   pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
  * Note: Concentration (µg/m^3) = molecular weight * concentration (ppb) / 24.45
+ * 
+ * Samples are often averaged anywhere from 1-24 hours. Some standards will
+ * consider ozone sample averages over 1 hour and 4/8 hours.
  * 
  * Useful websites with more information about various aqi scales:
  * https://en.wikipedia.org/wiki/Air_quality_index
  * https://atmotube.com/blog/standards-for-air-quality-indices-in-different-countries-aqi
  */
-int australia_aqi();       // Australia (AQI)
+int australia_aqi(float co,  float no2,  float o3_1hr, float o3_4hr, 
+                  float so2, float pm10, float pm2_5);       // Australia (AQI)
 int canada_aqhi();         // Canada (AQHI)
-int europe_caqi(float no2, float o3, float pm2_5, float pm10);         // Europe (CAQI)
+int europe_caqi(float no2, float o3, float pm10, float pm2_5);         // Europe (CAQI)
 int hong_kong_aqhi();      // Hong Kong (AQHI)
 int india_aqi();           // India (AQI)
 int mainland_china_aqi();  // Mainland China (AQI)
