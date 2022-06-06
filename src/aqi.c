@@ -1,15 +1,9 @@
-/*   co    μg/m^3, Carbon Monoxide (CO)               1 ppb = 1.1456 μg/m^3
- *   nh3   μg/m^3, Ammonia (NH3)                      1 ppb = 0.6966 μg/m^3
- *   no    μg/m^3, Nitric Oxide (NO)                  1 ppb = 1.2274 μg/m^3
- *   no2   μg/m^3, Nitrogen Dioxide (NO2)             1 ppb = 1.8816 μg/m^3
- *   o3    μg/m^3, Ground-Level Ozone (O3)            1 ppb = 1.9632 μg/m^3
- *   pb    μg/m^3, Lead (Pb)                          1 ppb = 1.9632 μg/m^3
- *   so2   μg/m^3, Sulfur Dioxide (SO2)               1 ppb = 8.4744 μg/m^3
- *   pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
- *   pm10  μg/m^3, Coarse Particulate Matter (<10μm)
- */
-
 #include <math.h>
+#include "aqi.h"
+
+int max(int a, int b) {
+  return a >= b ? a : b;
+}
 
 int compute_nepm_aqi(float std, float c) {
   return (int) round(c / std * 100);
@@ -203,11 +197,40 @@ int europe_caqi(float no2, float o3, float pm10, float pm2_5) {
 /* Hong Kong (AQHI)
  *
  * References:
- *   
- *   
+ *   https://aqicn.org/faq/2015-06-03/overview-of-hong-kongs-air-quality-health-index/
+ *   https://www.aqhi.gov.hk/en/what-is-aqhi/faqs.html
  */
-int hong_kong_aqhi();
-
+int hong_kong_aqhi(float no2, float o3, float so2, float pm10, float pm2_5) {
+  float ar =   ((exp(0.0004462559 * no2) - 1) * 100)
+             + ((exp(0.0001393235 * so2) - 1) * 100)
+             + ((exp(0.0005116328 * o3) - 1) * 100)
+             + fmax(((exp(0.0002821751 * pm10) - 1) * 100), 
+                    ((exp(0.0002180567 * pm2_5) - 1) * 100));
+  if (ar >= 0 && ar <= 1.88) {
+    return 1;
+  } else if (ar <= 3.76) {
+    return 2;
+  } else if (ar <= 5.64) {
+    return 3;
+  } else if (ar <= 7.52) {
+    return 4;
+  } else if (ar <= 9.41) {
+    return 5;
+  } else if (ar <= 11.29) {
+    return 6;
+  } else if (ar <= 12.91) {
+    return 7;
+  } else if (ar <= 15.07) {
+    return 8;
+  } else if (ar <= 17.22) {
+    return 9;
+  } else if (ar <= 19.37) {
+    return 10;
+  } else if (ar > 19.37) {
+    return 11;
+  }
+  return -1;
+}
 
 /* India (AQI)
  *
@@ -255,6 +278,17 @@ int united_kingdom_daqi();
  *   
  */
 int united_states_aqi();
+
+/*   co    μg/m^3, Carbon Monoxide (CO)               1 ppb = 1.1456 μg/m^3
+ *   nh3   μg/m^3, Ammonia (NH3)                      1 ppb = 0.6966 μg/m^3
+ *   no    μg/m^3, Nitric Oxide (NO)                  1 ppb = 1.2274 μg/m^3
+ *   no2   μg/m^3, Nitrogen Dioxide (NO2)             1 ppb = 1.8816 μg/m^3
+ *   o3    μg/m^3, Ground-Level Ozone (O3)            1 ppb = 1.9632 μg/m^3
+ *   pb    μg/m^3, Lead (Pb)                          1 ppb = 1.9632 μg/m^3
+ *   so2   μg/m^3, Sulfur Dioxide (SO2)               1 ppb = 8.4744 μg/m^3
+ *   pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
+ *   pm10  μg/m^3, Coarse Particulate Matter (<10μm)
+ */
 
 char* australia_aqi_desc();
 char* canada_aqhi_desc();

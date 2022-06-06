@@ -46,16 +46,16 @@ extern "C" {
  * https://atmotube.com/blog/standards-for-air-quality-indices-in-different-countries-aqi
  */
 int australia_aqi(float co,  float no2,  float o3_1hr, float o3_4hr, 
-                  float so2, float pm10, float pm2_5);       // Australia (AQI)
-int canada_aqhi();         // Canada (AQHI)
-int europe_caqi(float no2, float o3, float pm10, float pm2_5);         // Europe (CAQI)
-int hong_kong_aqhi();      // Hong Kong (AQHI)
-int india_aqi();           // India (AQI)
-int mainland_china_aqi();  // Mainland China (AQI)
-int singapore_psi();       // Singapore (PSI)
-int south_korea_cai();     // South Korea (CAI)
-int united_kingdom_daqi(); // United Kingdom (DAQI)
-int united_states_aqi();   // United States (AQI)
+                  float so2, float pm10, float pm2_5);
+int canada_aqhi(float no2, float o3, float pm2_5);
+int europe_caqi(float no2, float o3, float pm10, float pm2_5);
+int hong_kong_aqhi(float no2, float o3, float so2, float pm10, float pm2_5);
+int india_aqi();
+int mainland_china_aqi();
+int singapore_psi();
+int south_korea_cai();
+int united_kingdom_daqi();
+int united_states_aqi();
 
 /* Returns the descriptor/category of an aqi value.
  * 
