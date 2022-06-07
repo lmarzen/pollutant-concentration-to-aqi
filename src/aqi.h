@@ -16,7 +16,7 @@ extern "C" {
 // #define EUROPE_CAQI_MAX         100
 // #define HONG_KONG_AQHI_MAX      10
 // #define INDIA_AQI_MAX           400
-// #define MAINLAND_CHINA_AQI_MAX  300
+// #define MAINLAND_CHINA_AQI_MAX  500
 // #define SINGAPORE_PSI_MAX       400
 // #define SOUTH_KOREA_CAI_MAX     500
 // #define UNITED_KINGDOM_DAQI_MAX 10
@@ -38,20 +38,28 @@ extern "C" {
  *   pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
  * Note: Concentration (µg/m^3) = molecular weight * concentration (ppb) / 24.45
  * 
- * Samples are often averaged anywhere from 1-24 hours. Some standards will
- * consider ozone sample averages over 1 hour and 4/8 hours.
+ * Most scales require that samples are averaged over a specified period.
+ * The parameters denote what time period samples should be averaged over with 
+ * '_Xh', where 'X' is the time period samples are averaged over.
+ * 
+ * Ex: 'co_8h' is interpreted as, the X hour moving average concentration of 
+ *             Carbon Monoxide.
  * 
  * Useful websites with more information about various aqi scales:
  * https://en.wikipedia.org/wiki/Air_quality_index
  * https://atmotube.com/blog/standards-for-air-quality-indices-in-different-countries-aqi
  */
-int australia_aqi(float co,  float no2,  float o3_1hr, float o3_4hr, 
-                  float so2, float pm10, float pm2_5);
-int canada_aqhi(float no2, float o3, float pm2_5);
-int europe_caqi(float no2, float o3, float pm10, float pm2_5);
-int hong_kong_aqhi(float no2, float o3, float so2, float pm10, float pm2_5);
-int india_aqi();
-int mainland_china_aqi();
+int australia_aqi(float co_8h,  float no2_1h,   float o3_1h, float o3_4h, 
+                  float so2_1h, float pm10_24h, float pm2_5_24h);
+int canada_aqhi(float no2_3h, float o3_3h, float pm2_5_3h);
+int europe_caqi(float no2_1h, float o3_1h, float pm10_1h, float pm2_5_1h);
+int hong_kong_aqhi(float no2_3h,  float o3_3h, float so2_3h, 
+                   float pm10_3h, float pm2_5_3h);
+int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h, 
+              float pb_24h, float so2_24h, float pm10_24h, float pm2_5_24h);
+int mainland_china_aqi(float co_1h, float co_24h, float no2_1h, float no2_24h,  
+                       float o3_1h, float o3_8h,  float so2_1h, float so2_24h, 
+                       float pm10_24h, float pm2_5_24h);
 int singapore_psi();
 int south_korea_cai();
 int united_kingdom_daqi();
