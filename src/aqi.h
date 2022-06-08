@@ -39,7 +39,8 @@ extern "C" {
  * 
  * Most scales require that samples are averaged over a specified period.
  * The parameters denote what time period samples should be averaged over with 
- * '_Xh', where 'X' is the time period samples are averaged over.
+ * '_Xh', where 'X' is the time period samples are averaged over in hours. 
+ * (or '_Xmin' for minutes)
  * 
  * Ex: 'co_8h' is interpreted as, the X hour moving average concentration of 
  *             Carbon Monoxide.
@@ -61,9 +62,10 @@ int mainland_china_aqi(float co_1h, float co_24h, float no2_1h, float no2_24h,
                        float pm10_24h, float pm2_5_24h);
 int singapore_psi(float co_8h,   float no2_1h,   float o3_1h, float o3_8h, 
                   float so2_24h, float pm10_24h, float pm2_5_24h);
-int south_korea_cai(float co_1h,   float no2_1h,   float o3_1h, 
+int south_korea_cai(float co_1h,  float no2_1h,   float o3_1h, 
                     float so2_1h, float pm10_24h, float pm2_5_24h);
-int united_kingdom_daqi();
+int united_kingdom_daqi(float no2_1h,   float o3_8h, float so2_15min, 
+                        float pm10_24h, float pm2_5_24h);
 int united_states_aqi();
 
 /* Returns the descriptor/category of an aqi value.

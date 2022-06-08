@@ -1167,7 +1167,7 @@ int singapore_psi(float co_8h,   float no2_1h,   float o3_1h, float o3_8h,
  * References:
  *   https://www.airkorea.or.kr/eng/khaiInfo?pMENU_NO=166
  */
-int south_korea_cai(float co_1h,   float no2_1h,   float o3_1h, 
+int south_korea_cai(float co_1h,  float no2_1h,   float o3_1h, 
                     float so2_1h, float pm10_24h, float pm2_5_24h) {
   int cai = 0;
   float i_lo, i_hi;
@@ -1345,10 +1345,42 @@ int south_korea_cai(float co_1h,   float no2_1h,   float o3_1h,
 /* United Kingdom (DAQI)
  *
  * References:
- *   
- *   
+ *   https://uk-air.defra.gov.uk/air-pollution/daqi?view=more-info
+ *   https://en.wikipedia.org/wiki/Air_quality_index#United_Kingdom
  */
-int united_kingdom_daqi();
+int united_kingdom_daqi(float no2_1h,   float o3_8h, float so2_15min, 
+                        float pm10_24h, float pm2_5_24h) {
+  if (o3_8h > 240    || no2_1h > 600   || so2_15min > 1064 || 
+      pm2_5_24h > 70 || pm10_24h > 100) {
+    return 10;
+  } else if (o3_8h > 213    || no2_1h > 534  || so2_15min > 887 || 
+             pm2_5_24h > 64 || pm10_24h > 91) {
+    return 9;
+  } else if (o3_8h > 187    || no2_1h > 467  || so2_15min > 710 || 
+             pm2_5_24h > 58 || pm10_24h > 83) {
+    return 8;
+  } else if (o3_8h > 160    || no2_1h > 400  || so2_15min > 532 || 
+             pm2_5_24h > 53 || pm10_24h > 75) {
+    return 7;
+  } else if (o3_8h > 140    || no2_1h > 334  || so2_15min > 443 || 
+             pm2_5_24h > 47 || pm10_24h > 66) {
+    return 6;
+  } else if (o3_8h > 120    || no2_1h > 267  || so2_15min > 354 || 
+             pm2_5_24h > 41 || pm10_24h > 58) {
+    return 5;
+  } else if (o3_8h > 100    || no2_1h > 200  || so2_15min > 266 || 
+             pm2_5_24h > 35 || pm10_24h > 50) {
+    return 4;
+  } else if (o3_8h > 66     || no2_1h > 134  || so2_15min > 177 || 
+             pm2_5_24h > 23 || pm10_24h > 33) {
+    return 3;
+  } else if (o3_8h > 33     || no2_1h > 67   || so2_15min > 88  || 
+             pm2_5_24h > 11 || pm10_24h > 16) {
+    return 2;
+  } else {
+    return 1;
+  }
+}
 
 /* United States (AQI)
  *
