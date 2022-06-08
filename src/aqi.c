@@ -1,9 +1,8 @@
 #include <math.h>
 #include "aqi.h"
 
-int max(int a, int b) {
-  return a >= b ? a : b;
-}
+int max(int a, int b) {return a >= b ? a : b;}
+int min(int a, int b) {return a <= b ? a : b;}
 
 int compute_nepm_aqi(float std, float c) {
   return (int) round(c / std * 100);
@@ -11,9 +10,9 @@ int compute_nepm_aqi(float std, float c) {
 
 int compute_piecewise_aqi(float i_lo, float i_hi,
                           float c_lo, float c_hi, float c) {
-  return (int) max(i_lo, round(
+  return (int) min(i_hi, max(i_lo, round(
     (((i_hi - i_lo)) / ((c_hi - c_lo))) * (c - c_lo) + i_lo
-    ));
+    )));
 }
 
 /* Australia (AQI)
@@ -239,30 +238,30 @@ int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h,
 
   // co    μg/m^3, Carbon Monoxide (CO)
   // 1mg/m^3 = 1000 μg/m^3
-  if (co_8h <= 1000) {
+  if (co_8h < 1050) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 1000;
-  } else if (co_8h <= 2000) {
+  } else if (co_8h < 2050) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 1000;
+    c_lo = 1100;
     c_hi = 2000;
-  } else if (co_8h <= 10000) {
+  } else if (co_8h < 10050) {
     i_lo = 101;
     i_hi = 200;
-    c_lo = 2000;
+    c_lo = 2100;
     c_hi = 10000;
-  } else if (co_8h <= 17000) {
+  } else if (co_8h < 17050) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 10000;
+    c_lo = 10100;
     c_hi = 17000;
-  } else if (co_8h <= 34000) {
+  } else if (co_8h < 34050) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 17000;
+    c_lo = 17100;
     c_hi = 34000;
   } else {
     // index > 400
@@ -271,30 +270,30 @@ int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h,
   aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, co_8h));
 
   // nh3   μg/m^3, Ammonia (NH3)
-  if (nh3_24h <= 200) {
+  if (nh3_24h < 200.5) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 200;
-  } else if (nh3_24h <= 400) {
+  } else if (nh3_24h < 400.5) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 200;
+    c_lo = 201;
     c_hi = 400;
-  } else if (nh3_24h <= 800) {
+  } else if (nh3_24h < 800.5) {
     i_lo = 101;
     i_hi = 200;
-    c_lo = 400;
+    c_lo = 401;
     c_hi = 800;
-  } else if (nh3_24h <= 1200) {
+  } else if (nh3_24h < 1200.5) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 800;
+    c_lo = 801;
     c_hi = 1200;
-  } else if (nh3_24h <= 1800) {
+  } else if (nh3_24h < 1800.5) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 1200;
+    c_lo = 1201;
     c_hi = 1800;
   } else {
     // index > 400
@@ -303,30 +302,30 @@ int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h,
   aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, nh3_24h));
 
   // no2   μg/m^3, Nitrogen Dioxide (NO2)
-  if (no2_24h <= 40) {
+  if (no2_24h < 40.5) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 40;
-  } else if (no2_24h <= 80) {
+  } else if (no2_24h < 80.5) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 40;
+    c_lo = 41;
     c_hi = 80;
-  } else if (no2_24h <= 180) {
+  } else if (no2_24h < 180.5) {
     i_lo = 101;
     i_hi = 200;
-    c_lo = 80;
+    c_lo = 81;
     c_hi = 180;
-  } else if (no2_24h <= 280) {
+  } else if (no2_24h < 280.5) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 180;
+    c_lo = 181;
     c_hi = 280;
-  } else if (no2_24h <= 400) {
+  } else if (no2_24h < 400.5) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 280;
+    c_lo = 281;
     c_hi = 400;
   } else {
     // index > 400
@@ -335,30 +334,30 @@ int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h,
   aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, no2_24h));
 
   // o3    μg/m^3, Ozone (O3)
-  if (o3_8h <= 50) {
+  if (o3_8h < 50.5) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 50;
-  } else if (o3_8h <= 100) {
+  } else if (o3_8h < 100.5) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 50;
+    c_lo = 51;
     c_hi = 100;
-  } else if (o3_8h <= 168) {
+  } else if (o3_8h < 168.5) {
     i_lo = 101;
     i_hi = 200;
-    c_lo = 100;
+    c_lo = 101;
     c_hi = 168;
-  } else if (o3_8h <= 208) {
+  } else if (o3_8h < 208.5) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 168;
+    c_lo = 169;
     c_hi = 208;
-  } else if (o3_8h <= 748) {
+  } else if (o3_8h < 748.5) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 208;
+    c_lo = 209;
     c_hi = 748;
   } else {
     // index > 400
@@ -367,30 +366,30 @@ int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h,
   aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, o3_8h));
 
   // pb    μg/m^3, Lead (Pb)
-  if (pb_24h pb_24h <= 0.5) {
+  if (pb_24h < 0.55) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 0.5;
-  } else if (pb_24h <= 1.0) {
+  } else if (pb_24h < 1.05) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 0.5;
+    c_lo = 0.6;
     c_hi = 1.0;
-  } else if (pb_24h <= 2.0) {
+  } else if (pb_24h < 2.05) {
     i_lo = 101;
     i_hi = 200;
-    c_lo = 1.0;
+    c_lo = 1.1;
     c_hi = 2.0;
-  } else if (pb_24h <= 3.0) {
+  } else if (pb_24h < 3.05) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 2.0;
+    c_lo = 2.1;
     c_hi = 3.0;
-  } else if (pb_24h <= 3.5) {
+  } else if (pb_24h < 3.55) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 3.0;
+    c_lo = 3.1;
     c_hi = 3.5;
   } else {
     // index > 400
@@ -399,30 +398,30 @@ int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h,
   aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pb_24h));
 
   // so2   μg/m^3, Sulfur Dioxide (SO2)
-  if (so2_24h <= 40) {
+  if (so2_24h < 40.5) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 40;
-  } else if (so2_24h <= 80) {
+  } else if (so2_24h < 80.5) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 40;
+    c_lo = 41;
     c_hi = 80;
-  } else if (so2_24h <= 380) {
+  } else if (so2_24h < 380.5) {
     i_lo = 101;
     i_hi = 200;
-    c_lo = 80;
+    c_lo = 81;
     c_hi = 380;
-  } else if (so2_24h <= 800) {
+  } else if (so2_24h < 800.5) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 380;
+    c_lo = 381;
     c_hi = 800;
-  } else if (so2_24h <= 1600) {
+  } else if (so2_24h < 1600.5) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 800;
+    c_lo = 801;
     c_hi = 1600;
   } else {
     // index > 400
@@ -431,30 +430,30 @@ int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h,
   aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, so2_24h));
 
   // pm10  μg/m^3, Coarse Particulate Matter (<10μm)
-  if (pm10_24h <= 50) {
+  if (pm10_24h < 50.5) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 50;
-  } else if (pm10_24h <= 100) {
+  } else if (pm10_24h < 100.5) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 50;
+    c_lo = 51;
     c_hi = 100;
-  } else if (pm10_24h <= 250) {
+  } else if (pm10_24h < 250.5) {
     i_lo = 101;
     i_hi = 200;
-    c_lo = 100;
+    c_lo = 101;
     c_hi = 250;
-  } else if (pm10_24h <= 350) {
+  } else if (pm10_24h < 350.5) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 250;
+    c_lo = 251;
     c_hi = 350;
-  } else if (pm10_24h <= 430) {
+  } else if (pm10_24h < 430.5) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 350;
+    c_lo = 351;
     c_hi = 430;
   } else {
     // index > 400
@@ -463,30 +462,30 @@ int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h,
   aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm10_24h));
 
   // pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
-  if (pm2_5_24h <= 30) {
+  if (pm2_5_24h < 30.5) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 30;
-  } else if (pm2_5_24h <= 60) {
+  } else if (pm2_5_24h < 60.5) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 30;
+    c_lo = 31;
     c_hi = 60;
-  } else if (pm2_5_24h <= 90) {
+  } else if (pm2_5_24h < 90.5) {
     i_lo = 101;
     i_hi = 200;
-    c_lo = 60;
+    c_lo = 61;
     c_hi = 90;
-  } else if (pm2_5_24h <= 120) {
+  } else if (pm2_5_24h < 120.5) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 90;
+    c_lo = 91;
     c_hi = 120;
-  } else if (pm2_5_24h <= 250) {
+  } else if (pm2_5_24h < 250.5) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 120;
+    c_lo = 121;
     c_hi = 250;
   } else {
     // index > 400
@@ -922,35 +921,35 @@ int singapore_psi(float co_8h,   float no2_1h,   float o3_1h, float o3_8h,
 
   // co    μg/m^3, Carbon Monoxide (CO)
   // 1mg/m^3 = 1000 μg/m^3
-  if (co_8h <= 5000) {
+  if (co_8h < 5050) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 5000;
-  } else if (co_8h <= 10000) {
+  } else if (co_8h < 10050) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 5000;
+    c_lo = 5100;
     c_hi = 10000;
-  } else if (co_8h <= 17000) {
+  } else if (co_8h < 17050) {
     i_lo = 101;
     i_hi = 200;
-    c_lo = 10000;
+    c_lo = 10100;
     c_hi = 17000;
-  } else if (co_8h <= 34000) {
+  } else if (co_8h < 34050) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 17000;
+    c_lo = 17100;
     c_hi = 34000;
-  } else if (co_8h <= 46000) {
+  } else if (co_8h < 46050) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 34000;
+    c_lo = 34100;
     c_hi = 46000;
-  } else if (co_8h <= 57500) {
+  } else if (co_8h < 57550) {
     i_lo = 401;
     i_hi = 500;
-    c_lo = 46000;
+    c_lo = 46100;
     c_hi = 57500;
   } else {
     // index > 500
@@ -959,87 +958,91 @@ int singapore_psi(float co_8h,   float no2_1h,   float o3_1h, float o3_8h,
   psi = max(psi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, co_8h));
 
   // no2   μg/m^3, Nitrogen Dioxide (NO2)
-  // only calculated if > 1130 μg/m^3
-  if (no2_1h > 1130) {
-    if (no2_1h <= 2260) {
+  // only calculated if >= 1130 μg/m^3
+  if (no2_1h >= 1129.5) {
+    if (no2_1h < 2260.5) {
       i_lo = 201;
       i_hi = 300;
-      c_lo = 1130;
+      c_lo = 1131;
       c_hi = 2260;
-    } else if (no2_1h <= 3000) {
+    } else if (no2_1h < 3000.5) {
       i_lo = 301;
       i_hi = 400;
-      c_lo = 2260;
+      c_lo = 2261;
       c_hi = 3000;
-    } else if (no2_1h <= 3750) {
+    } else if (no2_1h < 3750.5) {
       i_lo = 401;
       i_hi = 500;
-      c_lo = 3000;
+      c_lo = 3001;
       c_hi = 3750;
     } else {
       // index > 500
       return 501;
     }
-    psi = max(psi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, no2_1h));
+    if (no2_1h >= 1129.5 && no2_1h < 1130.5) {
+      psi = max(psi, 200);
+    } else {
+      psi = max(psi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, no2_1h));
+    }
   }
 
   // o3    μg/m^3, Ozone (O3)
   // When 8-hour o3 concentration is > 785 μg/m^3, then the PSI sub-index is
   // calculated using the 1 hour concentration.
   if (o3_8h <= 785 ) {
-    if (o3_8h <= 118) {
+    if (o3_8h < 118.5) {
       i_lo = 0;
       i_hi = 50;
       c_lo = 0;
       c_hi = 118;
-    } else if (o3_8h <= 157) {
+    } else if (o3_8h < 157.5) {
       i_lo = 51;
       i_hi = 100;
-      c_lo = 118;
+      c_lo = 119;
       c_hi = 157;
-    } else if (o3_8h <= 235) {
+    } else if (o3_8h < 235.5) {
       i_lo = 101;
       i_hi = 200;
-      c_lo = 157;
+      c_lo = 158;
       c_hi = 235;
     } else {
       // o3_8h <= 785
       i_lo = 201;
       i_hi = 300;
-      c_lo = 235;
+      c_lo = 236;
       c_hi = 785;
     }
     psi = max(psi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, o3_8h));
   } else {
-    if (o3_1h <= 118) {
+    if (o3_1h < 118.5) {
       i_lo = 0;
       i_hi = 50;
       c_lo = 0;
       c_hi = 118;
-    } else if (o3_1h <= 157) {
+    } else if (o3_1h < 157.5) {
       i_lo = 51;
       i_hi = 100;
-      c_lo = 118;
+      c_lo = 119;
       c_hi = 157;
-    } else if (o3_1h <= 235) {
+    } else if (o3_1h < 235.5) {
       i_lo = 101;
       i_hi = 200;
-      c_lo = 157;
+      c_lo = 158;
       c_hi = 235;
-    } else if (o3_1h <= 785) {
+    } else if (o3_1h < 785.5) {
       i_lo = 201;
       i_hi = 300;
-      c_lo = 235;
+      c_lo = 236;
       c_hi = 785;
-    } else if (o3_1h <= 980) {
+    } else if (o3_1h < 980.5) {
       i_lo = 301;
       i_hi = 400;
-      c_lo = 785;
+      c_lo = 786;
       c_hi = 980;
-    } else if (o3_1h <= 1180) {
+    } else if (o3_1h < 1180.5) {
       i_lo = 401;
       i_hi = 500;
-      c_lo = 980;
+      c_lo = 981;
       c_hi = 1180;
     } else {
       // index > 500
@@ -1049,35 +1052,35 @@ int singapore_psi(float co_8h,   float no2_1h,   float o3_1h, float o3_8h,
   }
 
   // so2   μg/m^3, Sulfur Dioxide (SO2)
-  if (so2_24h <= 80) {
+  if (so2_24h < 80.5) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 80;
-  } else if (so2_24h <= 365) {
+  } else if (so2_24h < 365.5) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 80;
+    c_lo = 81;
     c_hi = 365;
-  } else if (so2_24h <= 800) {
+  } else if (so2_24h < 800.5) {
     i_lo = 101;
     i_hi = 200;
-    c_lo = 365;
+    c_lo = 366;
     c_hi = 800;
-  } else if (so2_24h <= 1600) {
+  } else if (so2_24h < 1600.5) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 800;
+    c_lo = 801;
     c_hi = 1600;
-  } else if (so2_24h <= 2100) {
+  } else if (so2_24h < 2100.5) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 1600;
+    c_lo = 1601;
     c_hi = 2100;
-  } else if (so2_24h <= 2620) {
+  } else if (so2_24h < 2620.5) {
     i_lo = 401;
     i_hi = 500;
-    c_lo = 2100;
+    c_lo = 2101;
     c_hi = 2620;
   } else {
     // index > 500
@@ -1086,35 +1089,35 @@ int singapore_psi(float co_8h,   float no2_1h,   float o3_1h, float o3_8h,
   psi = max(psi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, so2_24h));
 
   // pm10  μg/m^3, Coarse Particulate Matter (<10μm)
-  if (pm10_24h <= 50) {
+  if (pm10_24h < 50.5) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 50;
-  } else if (pm10_24h <= 150) {
+  } else if (pm10_24h < 150.5) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 50;
+    c_lo = 51;
     c_hi = 150;
-  } else if (pm10_24h <= 350) {
+  } else if (pm10_24h < 350.5) {
     i_lo = 101;
     i_hi = 200;
-    c_lo = 150;
+    c_lo = 151;
     c_hi = 350;
-  } else if (pm10_24h <= 420) {
+  } else if (pm10_24h < 420.5) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 350;
+    c_lo = 351;
     c_hi = 420;
-  } else if (pm10_24h <= 500) {
+  } else if (pm10_24h < 500.5) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 420;
+    c_lo = 421;
     c_hi = 500;
-  } else if (pm10_24h <= 600) {
+  } else if (pm10_24h < 600.5) {
     i_lo = 401;
     i_hi = 500;
-    c_lo = 500;
+    c_lo = 501;
     c_hi = 600;
   } else {
     // index > 500
@@ -1123,35 +1126,35 @@ int singapore_psi(float co_8h,   float no2_1h,   float o3_1h, float o3_8h,
   psi = max(psi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm10_24h));
 
   // pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
-  if (pm2_5_24h <= 12) {
+  if (pm2_5_24h < 12.5) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 12;
-  } else if (pm2_5_24h <= 55) {
+  } else if (pm2_5_24h < 55.5) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 12;
+    c_lo = 13;
     c_hi = 55;
-  } else if (pm2_5_24h <= 150) {
+  } else if (pm2_5_24h < 150.5) {
     i_lo = 101;
     i_hi = 200;
-    c_lo = 55;
+    c_lo = 56;
     c_hi = 150;
-  } else if (pm2_5_24h <= 250) {
+  } else if (pm2_5_24h < 250.5) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 150;
+    c_lo = 151;
     c_hi = 250;
-  } else if (pm2_5_24h <= 350) {
+  } else if (pm2_5_24h < 350.5) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 250;
+    c_lo = 251;
     c_hi = 350;
-  } else if (pm2_5_24h <= 500) {
+  } else if (pm2_5_24h < 500.5) {
     i_lo = 401;
     i_hi = 500;
-    c_lo = 350;
+    c_lo = 351;
     c_hi = 500;
   } else {
     // index > 500
@@ -1175,25 +1178,25 @@ int south_korea_cai(float co_1h,  float no2_1h,   float o3_1h,
 
   // co    μg/m^3, Carbon Monoxide (CO)
   // 1ppm * 1000ppb/1ppm * 1.1456 μg/m^3/ppb = 1145.6 μg/m^3
-  if (co_1h <= 2291.2) {
+  if (co_1h < 2348.48) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 2291.2;
-  } else if (co_1h <= 10310.4) {
+  } else if (co_1h < 10367.68) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 2291.2;
+    c_lo = 2405.76;
     c_hi = 10310.4;
-  } else if (co_1h <= 17184) {
+  } else if (co_1h < 17241.28) {
     i_lo = 101;
     i_hi = 250;
-    c_lo = 10310.4;
+    c_lo = 10424.96;
     c_hi = 17184;
-  } else if (co_1h <= 57280) {
+  } else if (co_1h < 57337.28) {
     i_lo = 251;
     i_hi = 500;
-    c_lo = 17184;
+    c_lo = 17298.56;
     c_hi = 57280;
   } else {
     // index > 500
@@ -1203,25 +1206,25 @@ int south_korea_cai(float co_1h,  float no2_1h,   float o3_1h,
 
   // no2   μg/m^3, Nitrogen Dioxide (NO2)
   // 1ppm * 1000ppb/1ppm * 1.8816 μg/m^3/ppb = 1881.6 μg/m^3
-  if (no2_1h <= 56.448) {
+  if (no2_1h < 57.3888) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 56.448;
-  } else if (no2_1h <= 112.896) {
+  } else if (no2_1h < 113.8368) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 56.448;
+    c_lo = 58.3296;
     c_hi = 112.896;
-  } else if (no2_1h <= 376.32) {
+  } else if (no2_1h < 377.2608) {
     i_lo = 101;
     i_hi = 250;
-    c_lo = 112.896;
+    c_lo = 114.7776;
     c_hi = 376.32;
-  } else if (no2_1h <= 3763.2) {
+  } else if (no2_1h < 3772.608) {
     i_lo = 251;
     i_hi = 500;
-    c_lo = 376.32;
+    c_lo = 378.2016;
     c_hi = 3763.2;
   } else {
     // index > 500
@@ -1231,25 +1234,25 @@ int south_korea_cai(float co_1h,  float no2_1h,   float o3_1h,
 
   // o3    μg/m^3, Ozone (O3)
   // 1ppm * 1000ppb/1ppm * 1.9632 μg/m^3/ppb = 1963.2 μg/m^3
-  if (o3_1h <= 58.896) {
+  if (o3_1h < 59.8776) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 58.896;
-  } else if (o3_1h <= 176.688) {
+  } else if (o3_1h < 177.6696) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 58.896;
+    c_lo = 60.8592;
     c_hi = 176.688;
-  } else if (o3_1h <= 294.48) {
+  } else if (o3_1h < 295.4616) {
     i_lo = 101;
     i_hi = 250;
-    c_lo = 176.688;
+    c_lo = 178.6512;
     c_hi = 294.48;
-  } else if (o3_1h <= 1177.92) {
+  } else if (o3_1h < 1178.9016) {
     i_lo = 251;
     i_hi = 500;
-    c_lo = 294.48;
+    c_lo = 296.4432;
     c_hi = 1177.92;
   } else {
     // index > 500
@@ -1259,25 +1262,25 @@ int south_korea_cai(float co_1h,  float no2_1h,   float o3_1h,
 
   // so2   μg/m^3, Sulfur Dioxide (SO2)
   // 1ppm * 1000ppb/1ppm * 8.4744 μg/m^3/ppb = 8474.4 μg/m^3
-  if (so2_1h <= 169.488) {
+  if (so2_1h < 173.7252) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 169.488;
-  } else if (so2_1h <= 423.72) {
+  } else if (so2_1h < 427.9572) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 169.488;
+    c_lo = 177.9624;
     c_hi = 423.72;
-  } else if (so2_1h <= 1271.16) {
+  } else if (so2_1h < 1271.16) {
     i_lo = 101;
     i_hi = 250;
-    c_lo = 423.72;
+    c_lo = 432.1944;
     c_hi = 1271.16;
-  } else if (so2_1h <= 8474.4) {
+  } else if (so2_1h < 8478.6372) {
     i_lo = 251;
     i_hi = 500;
-    c_lo = 1271.16;
+    c_lo = 1279.6344;
     c_hi = 8474.4;
   } else {
     // index > 500
@@ -1286,25 +1289,25 @@ int south_korea_cai(float co_1h,  float no2_1h,   float o3_1h,
   cai = max(cai, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, so2_1h));
 
   // pm10  μg/m^3, Coarse Particulate Matter (<10μm)
-  if (pm10_24h <= 30) {
+  if (pm10_24h < 30.5) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 30;
-  } else if (pm10_24h <= 80) {
+  } else if (pm10_24h < 80.5) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 30;
+    c_lo = 31;
     c_hi = 80;
-  } else if (pm10_24h <= 150) {
+  } else if (pm10_24h < 150.5) {
     i_lo = 101;
     i_hi = 250;
-    c_lo = 80;
+    c_lo = 81;
     c_hi = 150;
-  } else if (pm10_24h <= 600) {
+  } else if (pm10_24h < 600.5) {
     i_lo = 251;
     i_hi = 500;
-    c_lo = 150;
+    c_lo = 151;
     c_hi = 600;
   } else {
     // index > 500
@@ -1313,25 +1316,25 @@ int south_korea_cai(float co_1h,  float no2_1h,   float o3_1h,
   cai = max(cai, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm10_24h));
 
   // pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
-  if (pm2_5_24h <= 15) {
+  if (pm2_5_24h < 15.5) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
     c_hi = 15;
-  } else if (pm2_5_24h <= 35) {
+  } else if (pm2_5_24h < 35.5) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 15;
+    c_lo = 16;
     c_hi = 35;
-  } else if (pm2_5_24h <= 75) {
+  } else if (pm2_5_24h < 75.5) {
     i_lo = 101;
     i_hi = 250;
-    c_lo = 35;
+    c_lo = 36;
     c_hi = 75;
-  } else if (pm2_5_24h <= 500) {
+  } else if (pm2_5_24h < 500.5) {
     i_lo = 251;
     i_hi = 500;
-    c_lo = 75;
+    c_lo = 76;
     c_hi = 500;
   } else {
     // index > 500
@@ -1350,32 +1353,32 @@ int south_korea_cai(float co_1h,  float no2_1h,   float o3_1h,
  */
 int united_kingdom_daqi(float no2_1h,   float o3_8h, float so2_15min, 
                         float pm10_24h, float pm2_5_24h) {
-  if (o3_8h > 240    || no2_1h > 600   || so2_15min > 1064 || 
-      pm2_5_24h > 70 || pm10_24h > 100) {
+  if (o3_8h >= 240.5    || no2_1h >= 600.5   || so2_15min >= 1064.5 || 
+      pm2_5_24h >= 70.5 || pm10_24h >= 100.5) {
     return 10;
-  } else if (o3_8h > 213    || no2_1h > 534  || so2_15min > 887 || 
-             pm2_5_24h > 64 || pm10_24h > 91) {
+  } else if (o3_8h >= 213.5    || no2_1h >= 534.5  || so2_15min >= 887.5 || 
+             pm2_5_24h >= 64.5 || pm10_24h >= 91.5) {
     return 9;
-  } else if (o3_8h > 187    || no2_1h > 467  || so2_15min > 710 || 
-             pm2_5_24h > 58 || pm10_24h > 83) {
+  } else if (o3_8h >= 187.5    || no2_1h >= 467.5  || so2_15min >= 710.5 || 
+             pm2_5_24h >= 58.5 || pm10_24h >= 83.5) {
     return 8;
-  } else if (o3_8h > 160    || no2_1h > 400  || so2_15min > 532 || 
-             pm2_5_24h > 53 || pm10_24h > 75) {
+  } else if (o3_8h >= 160.5    || no2_1h >= 400.5  || so2_15min >= 532.5 || 
+             pm2_5_24h >= 53.5 || pm10_24h >= 75.5) {
     return 7;
-  } else if (o3_8h > 140    || no2_1h > 334  || so2_15min > 443 || 
-             pm2_5_24h > 47 || pm10_24h > 66) {
+  } else if (o3_8h >= 140.5    || no2_1h >= 334.5  || so2_15min >= 443.5 || 
+             pm2_5_24h >= 47.5 || pm10_24h >= 66.5) {
     return 6;
-  } else if (o3_8h > 120    || no2_1h > 267  || so2_15min > 354 || 
-             pm2_5_24h > 41 || pm10_24h > 58) {
+  } else if (o3_8h >= 120.5    || no2_1h >= 267.5  || so2_15min >= 354.5 || 
+             pm2_5_24h >= 41.5 || pm10_24h >= 58.5) {
     return 5;
-  } else if (o3_8h > 100    || no2_1h > 200  || so2_15min > 266 || 
-             pm2_5_24h > 35 || pm10_24h > 50) {
+  } else if (o3_8h >= 100.5    || no2_1h >= 200.5  || so2_15min >= 266.5 || 
+             pm2_5_24h >= 35.5 || pm10_24h >= 50.5) {
     return 4;
-  } else if (o3_8h > 66     || no2_1h > 134  || so2_15min > 177 || 
-             pm2_5_24h > 23 || pm10_24h > 33) {
+  } else if (o3_8h >= 66.5     || no2_1h >= 134.5  || so2_15min >= 177.5 || 
+             pm2_5_24h >= 23.5 || pm10_24h >= 33.5) {
     return 3;
-  } else if (o3_8h > 33     || no2_1h > 67   || so2_15min > 88  || 
-             pm2_5_24h > 11 || pm10_24h > 16) {
+  } else if (o3_8h >= 33.5     || no2_1h >= 67.5   || so2_15min >= 88.5  || 
+             pm2_5_24h >= 11.5 || pm10_24h >= 16.5) {
     return 2;
   } else {
     return 1;
