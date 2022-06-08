@@ -17,7 +17,7 @@ extern "C" {
 // #define HONG_KONG_AQHI_MAX      10
 // #define INDIA_AQI_MAX           400
 // #define MAINLAND_CHINA_AQI_MAX  500
-// #define SINGAPORE_PSI_MAX       400
+// #define SINGAPORE_PSI_MAX       500
 // #define SOUTH_KOREA_CAI_MAX     500
 // #define UNITED_KINGDOM_DAQI_MAX 10
 // #define UNITED_STATES_AQI_MAX   500
@@ -60,7 +60,8 @@ int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h,
 int mainland_china_aqi(float co_1h, float co_24h, float no2_1h, float no2_24h,  
                        float o3_1h, float o3_8h,  float so2_1h, float so2_24h, 
                        float pm10_24h, float pm2_5_24h);
-int singapore_psi();
+int singapore_psi(float co_8h,   float no2_1h,   float o3_1h, float o3_8h, 
+                  float so2_24h, float pm10_24h, float pm2_5_24h);
 int south_korea_cai();
 int united_kingdom_daqi();
 int united_states_aqi();
