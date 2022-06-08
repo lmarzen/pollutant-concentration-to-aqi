@@ -23,7 +23,6 @@ extern "C" {
 // #define UNITED_STATES_AQI_MAX   500
 
 /* Returns the Air Quality Index, rounded to the nearest integer
- *   -1 is returned if a parameter is invalid.
  * 
  * All pollutants will be interpreted as a concentration, with units μg/m^3.
  * Pollutants:
@@ -62,7 +61,8 @@ int mainland_china_aqi(float co_1h, float co_24h, float no2_1h, float no2_24h,
                        float pm10_24h, float pm2_5_24h);
 int singapore_psi(float co_8h,   float no2_1h,   float o3_1h, float o3_8h, 
                   float so2_24h, float pm10_24h, float pm2_5_24h);
-int south_korea_cai();
+int south_korea_cai(float co_1h,   float no2_1h,   float o3_1h, 
+                    float so2_1h, float pm10_24h, float pm2_5_24h);
 int united_kingdom_daqi();
 int united_states_aqi();
 

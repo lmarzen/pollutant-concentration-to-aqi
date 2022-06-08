@@ -229,6 +229,7 @@ int hong_kong_aqhi(float no2_3h,  float o3_3h, float so2_3h,
  *
  * References:
  *   https://www.aqi.in/blog/aqi/
+ *   https://www.pranaair.com/blog/what-is-air-quality-index-aqi-and-its-calculation/
  */
 int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h, 
               float pb_24h, float so2_24h, float pm10_24h, float pm2_5_24h) {
@@ -237,31 +238,32 @@ int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h,
   float c_lo, c_hi;
 
   // co    μg/m^3, Carbon Monoxide (CO)
-  if (co_8h <= 1) {
+  // 1mg/m^3 = 1000 μg/m^3
+  if (co_8h <= 1000) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
-    c_hi = 1;
-  } else if (co_8h <= 2) {
+    c_hi = 1000;
+  } else if (co_8h <= 2000) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 1;
-    c_hi = 2;
-  } else if (co_8h <= 10) {
+    c_lo = 1000;
+    c_hi = 2000;
+  } else if (co_8h <= 10000) {
     i_lo = 101;
     i_hi = 200;
-    c_lo = 2;
-    c_hi = 10;
-  } else if (co_8h <= 17) {
+    c_lo = 2000;
+    c_hi = 10000;
+  } else if (co_8h <= 17000) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 10;
-    c_hi = 17;
-  } else if (co_8h <= 34) {
+    c_lo = 10000;
+    c_hi = 17000;
+  } else if (co_8h <= 34000) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 17;
-    c_hi = 34;
+    c_lo = 17000;
+    c_hi = 34000;
   } else {
     // index > 400
     return 401;
@@ -510,82 +512,83 @@ int mainland_china_aqi(float co_1h, float co_24h, float no2_1h, float no2_24h,
   float c_lo, c_hi;
 
   // co    μg/m^3, Carbon Monoxide (CO)
-  if (co_1h <= 5) {
+  // 1mg/m^3 = 1000 μg/m^3
+  if (co_1h <= 5000) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
-    c_hi = 5;
-  } else if (co_1h <= 10) {
+    c_hi = 5000;
+  } else if (co_1h <= 10000) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 5;
-    c_hi = 10;
-  } else if (co_1h <= 35) {
+    c_lo = 5000;
+    c_hi = 10000;
+  } else if (co_1h <= 35000) {
     i_lo = 101;
     i_hi = 150;
-    c_lo = 10;
-    c_hi = 35;
-  } else if (co_1h <= 60) {
+    c_lo = 10000;
+    c_hi = 35000;
+  } else if (co_1h <= 60000) {
     i_lo = 151;
     i_hi = 200;
-    c_lo = 35;
-    c_hi = 60;
-  } else if (co_1h <= 90) {
+    c_lo = 35000;
+    c_hi = 60000;
+  } else if (co_1h <= 90000) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 60;
-    c_hi = 90;
-  } else if (co_1h <= 120) {
+    c_lo = 60000;
+    c_hi = 90000;
+  } else if (co_1h <= 120000) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 90;
-    c_hi = 120;
-  } else if (co_1h <= 150) {
+    c_lo = 90000;
+    c_hi = 120000;
+  } else if (co_1h <= 150000) {
     i_lo = 401;
     i_hi = 500;
-    c_lo = 120;
-    c_hi = 150;
+    c_lo = 120000;
+    c_hi = 150000;
   } else {
     // index > 500
     return 501;
   }
   aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, co_1h));
 
-  if (co_24h <= 2) {
+  if (co_24h <= 2000) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
-    c_hi = 2;
-  } else if (co_24h <= 4) {
+    c_hi = 2000;
+  } else if (co_24h <= 4000) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 2;
-    c_hi = 4;
-  } else if (co_24h <= 14) {
+    c_lo = 2000;
+    c_hi = 4000;
+  } else if (co_24h <= 14000) {
     i_lo = 101;
     i_hi = 150;
-    c_lo = 4;
-    c_hi = 14;
-  } else if (co_24h <= 24) {
+    c_lo = 4000;
+    c_hi = 14000;
+  } else if (co_24h <= 24000) {
     i_lo = 151;
     i_hi = 200;
-    c_lo = 14;
-    c_hi = 24;
-  } else if (co_24h <= 36) {
+    c_lo = 14000;
+    c_hi = 24000;
+  } else if (co_24h <= 36000) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 24;
-    c_hi = 36;
-  } else if (co_24h <= 48) {
+    c_lo = 24000;
+    c_hi = 36000;
+  } else if (co_24h <= 48000) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 36;
-    c_hi = 48;
-  } else if (co_24h <= 60) {
+    c_lo = 36000;
+    c_hi = 48000;
+  } else if (co_24h <= 60000) {
     i_lo = 401;
     i_hi = 500;
-    c_lo = 48;
-    c_hi = 60;
+    c_lo = 48000;
+    c_hi = 60000;
   } else {
     // index > 500
     return 501;
@@ -913,41 +916,42 @@ int mainland_china_aqi(float co_1h, float co_24h, float no2_1h, float no2_24h,
  */
 int singapore_psi(float co_8h,   float no2_1h,   float o3_1h, float o3_8h, 
                   float so2_24h, float pm10_24h, float pm2_5_24h) {
-int psi = 0;
+  int psi = 0;
   float i_lo, i_hi;
   float c_lo, c_hi;
 
   // co    μg/m^3, Carbon Monoxide (CO)
-  if (co_8h <= 5) {
+  // 1mg/m^3 = 1000 μg/m^3
+  if (co_8h <= 5000) {
     i_lo = 0;
     i_hi = 50;
     c_lo = 0;
-    c_hi = 5;
-  } else if (co_8h <= 10) {
+    c_hi = 5000;
+  } else if (co_8h <= 10000) {
     i_lo = 51;
     i_hi = 100;
-    c_lo = 5;
-    c_hi = 10;
-  } else if (co_8h <= 17) {
+    c_lo = 5000;
+    c_hi = 10000;
+  } else if (co_8h <= 17000) {
     i_lo = 101;
     i_hi = 200;
-    c_lo = 10;
-    c_hi = 17;
-  } else if (co_8h <= 34) {
+    c_lo = 10000;
+    c_hi = 17000;
+  } else if (co_8h <= 34000) {
     i_lo = 201;
     i_hi = 300;
-    c_lo = 17;
-    c_hi = 34;
-  } else if (co_8h <= 46) {
+    c_lo = 17000;
+    c_hi = 34000;
+  } else if (co_8h <= 46000) {
     i_lo = 301;
     i_hi = 400;
-    c_lo = 34;
-    c_hi = 46;
-  } else if (co_8h <= 57.5) {
+    c_lo = 34000;
+    c_hi = 46000;
+  } else if (co_8h <= 57500) {
     i_lo = 401;
     i_hi = 500;
-    c_lo = 46;
-    c_hi = 57.5;
+    c_lo = 46000;
+    c_hi = 57500;
   } else {
     // index > 500
     return 501;
@@ -1161,10 +1165,182 @@ int psi = 0;
 /* South Korea (CAI)
  *
  * References:
- *   
- *   
+ *   https://www.airkorea.or.kr/eng/khaiInfo?pMENU_NO=166
  */
-int south_korea_cai();
+int south_korea_cai(float co_1h,   float no2_1h,   float o3_1h, 
+                    float so2_1h, float pm10_24h, float pm2_5_24h) {
+  int cai = 0;
+  float i_lo, i_hi;
+  float c_lo, c_hi;
+
+  // co    μg/m^3, Carbon Monoxide (CO)
+  // 1ppm * 1000ppb/1ppm * 1.1456 μg/m^3/ppb = 1145.6 μg/m^3
+  if (co_1h <= 2291.2) {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 2291.2;
+  } else if (co_1h <= 10310.4) {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 2291.2;
+    c_hi = 10310.4;
+  } else if (co_1h <= 17184) {
+    i_lo = 101;
+    i_hi = 250;
+    c_lo = 10310.4;
+    c_hi = 17184;
+  } else if (co_1h <= 57280) {
+    i_lo = 251;
+    i_hi = 500;
+    c_lo = 17184;
+    c_hi = 57280;
+  } else {
+    // index > 500
+    return 501;
+  }
+  cai = max(cai, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, co_1h));
+
+  // no2   μg/m^3, Nitrogen Dioxide (NO2)
+  // 1ppm * 1000ppb/1ppm * 1.8816 μg/m^3/ppb = 1881.6 μg/m^3
+  if (no2_1h <= 56.448) {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 56.448;
+  } else if (no2_1h <= 112.896) {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 56.448;
+    c_hi = 112.896;
+  } else if (no2_1h <= 376.32) {
+    i_lo = 101;
+    i_hi = 250;
+    c_lo = 112.896;
+    c_hi = 376.32;
+  } else if (no2_1h <= 3763.2) {
+    i_lo = 251;
+    i_hi = 500;
+    c_lo = 376.32;
+    c_hi = 3763.2;
+  } else {
+    // index > 500
+    return 501;
+  }
+  cai = max(cai, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, no2_1h));
+
+  // o3    μg/m^3, Ozone (O3)
+  // 1ppm * 1000ppb/1ppm * 1.9632 μg/m^3/ppb = 1963.2 μg/m^3
+  if (o3_1h <= 58.896) {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 58.896;
+  } else if (o3_1h <= 176.688) {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 58.896;
+    c_hi = 176.688;
+  } else if (o3_1h <= 294.48) {
+    i_lo = 101;
+    i_hi = 250;
+    c_lo = 176.688;
+    c_hi = 294.48;
+  } else if (o3_1h <= 1177.92) {
+    i_lo = 251;
+    i_hi = 500;
+    c_lo = 294.48;
+    c_hi = 1177.92;
+  } else {
+    // index > 500
+    return 501;
+  }
+  cai = max(cai, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, o3_1h));
+
+  // so2   μg/m^3, Sulfur Dioxide (SO2)
+  // 1ppm * 1000ppb/1ppm * 8.4744 μg/m^3/ppb = 8474.4 μg/m^3
+  if (so2_1h <= 169.488) {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 169.488;
+  } else if (so2_1h <= 423.72) {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 169.488;
+    c_hi = 423.72;
+  } else if (so2_1h <= 1271.16) {
+    i_lo = 101;
+    i_hi = 250;
+    c_lo = 423.72;
+    c_hi = 1271.16;
+  } else if (so2_1h <= 8474.4) {
+    i_lo = 251;
+    i_hi = 500;
+    c_lo = 1271.16;
+    c_hi = 8474.4;
+  } else {
+    // index > 500
+    return 501;
+  }
+  cai = max(cai, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, so2_1h));
+
+  // pm10  μg/m^3, Coarse Particulate Matter (<10μm)
+  if (pm10_24h <= 30) {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 30;
+  } else if (pm10_24h <= 80) {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 30;
+    c_hi = 80;
+  } else if (pm10_24h <= 150) {
+    i_lo = 101;
+    i_hi = 250;
+    c_lo = 80;
+    c_hi = 150;
+  } else if (pm10_24h <= 600) {
+    i_lo = 251;
+    i_hi = 500;
+    c_lo = 150;
+    c_hi = 600;
+  } else {
+    // index > 500
+    return 501;
+  }
+  cai = max(cai, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm10_24h));
+
+  // pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
+  if (pm2_5_24h <= 15) {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 15;
+  } else if (pm2_5_24h <= 35) {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 15;
+    c_hi = 35;
+  } else if (pm2_5_24h <= 75) {
+    i_lo = 101;
+    i_hi = 250;
+    c_lo = 35;
+    c_hi = 75;
+  } else if (pm2_5_24h <= 500) {
+    i_lo = 251;
+    i_hi = 500;
+    c_lo = 75;
+    c_hi = 500;
+  } else {
+    // index > 500
+    return 501;
+  }
+  cai = max(cai, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm2_5_24h));
+
+  return cai;
+}
 
 /* United Kingdom (DAQI)
  *
