@@ -1714,15 +1714,174 @@ int united_states_aqi(float co_8h,    float no2_1h,
   return aqi;
 }
 
+/*
+ * Indicates Air Quality
+ */
 const char* australia_aqi_desc(int aqi) {
-  
+  if (aqi <= 33) {
+    return "Very Good";
+  } else if (aqi <= 66) {
+    return "Good";
+  } else if (aqi <= 99) {
+    return "Fair";
+  } else if (aqi <= 149) {
+    return "Poor";
+  } else if (aqi <= 200) {
+    return "Very Poor";
+  } else {
+    return "Hazardous";
+  }
 }
-const char* canada_aqhi_desc(int aqhi);
-const char* europe_caqi_desc(int caqi);
-const char* hong_kong_aqhi_desc(int aqhi);
-const char* india_aqi_desc(int aqi);
-const char* mainland_china_aqi_desc(int aqi);
-const char* singapore_psi_desc(int psi);
-const char* south_korea_cai_desc(int cai);
-const char* united_kingdom_daqi_desc(int daqi);
-const char* united_states_aqi_desc(int aqi);
+
+/*
+ * Indicates Health Risk
+ */
+const char* canada_aqhi_desc(int aqhi) {
+  if (aqhi <= 4) {
+    return "Low";
+  } else if (aqhi <= 6) {
+    return "Moderate";
+  } else if (aqhi <= 10) {
+    return "High";
+  } else {
+    return "Very High";
+  }
+}
+
+/*
+ * Indicates Air Pollution
+ */
+const char* europe_caqi_desc(int caqi) {
+  if (caqi <= 25) {
+    return "Very Low";
+  } else if (caqi <= 50) {
+    return "Low";
+  } else if (caqi <= 75) {
+    return "Medium";
+  } else if (caqi <= 100) {
+    return "High";
+  } else {
+    return "Very High";
+  }
+}
+
+/*
+ * Indicates Health Risk
+ */
+const char* hong_kong_aqhi_desc(int aqhi) {
+  if (aqhi <= 3) {
+    return "Low";
+  } else if (aqhi <= 6) {
+    return "Moderate";
+  } else if (aqhi <= 7) {
+    return "High";
+  } else if (aqhi <= 10) {
+    return "Very High";
+  } else {
+    return "Hazardous";
+  }
+}
+
+/*
+ * Indicates Air Quality
+ */
+const char* india_aqi_desc(int aqi) {
+  if (aqi <= 50) {
+    return "Good";
+  } else if (aqi <= 100) {
+    return "Satisfactory";
+  } else if (aqi <= 200) {
+    return "Moderate";
+  } else if (aqi <= 300) {
+    return "Poor";
+  } else if (aqi <= 400) {
+    return "Very Poor";
+  } else {
+    return "Severe";
+  }
+}
+
+/*
+ * Indicates Air Pollution
+ */
+const char* mainland_china_aqi_desc(int aqi) {
+  if (aqi <= 50) {
+    return "Excellent";
+  } else if (aqi <= 100) {
+    return "Good";
+  } else if (aqi <= 150) {
+    return "Lightly Polluted";
+  } else if (aqi <= 200) {
+    return "Moderately Polluted";
+  } else if (aqi <= 300) {
+    return "Heavily Polluted";
+  } else {
+    return "Severely Polluted";
+  }
+}
+
+/*
+ * Indicates Health Risk
+ */
+const char* singapore_psi_desc(int psi) {
+  if (psi <= 50) {
+    return "Good";
+  } else if (psi <= 100) {
+    return "Moderate";
+  } else if (psi <= 200) {
+    return "Unhealthy";
+  } else if (psi <= 300) {
+    return "Very Unhealthy";
+  } else {
+    return "Hazardous";
+  }
+}
+
+/*
+ * Indicates Health Risk
+ */
+const char* south_korea_cai_desc(int cai) {
+  if (cai <= 50) {
+    return "Good";
+  } else if (cai <= 100) {
+    return "Medium";
+  } else if (cai <= 250) {
+    return "Unhealthy";
+  } else {
+    return "Very Unhealthy";
+  }
+}
+
+/*
+ * Indicates Air Pollution
+ */
+const char* united_kingdom_daqi_desc(int daqi) {
+  if (daqi <= 3) {
+    return "Low";
+  } else if (daqi <= 6) {
+    return "Moderate";
+  } else if (daqi <= 9) {
+    return "High";
+  } else {
+    return "Very High";
+  }
+}
+
+/*
+ * Indicates Health Risk
+ */
+const char* united_states_aqi_desc(int aqi) {
+  if (aqi <= 50) {
+    return "Good";
+  } else if (aqi <= 100) {
+    return "Moderate";
+  } else if (aqi <= 150) {
+    return "Unhealthy for Sensitive Individuals";
+  } else if (aqi <= 200) {
+    return "Unhealthy";
+  } else if (aqi <= 300) {
+    return "Very Unhealthy";
+  } else {
+    return "Hazardous";
+  }
+}

@@ -48,6 +48,7 @@ extern "C" {
  * https://en.wikipedia.org/wiki/Air_quality_index
  * https://atmotube.com/blog/standards-for-air-quality-indices-in-different-countries-aqi
  */
+
 int australia_aqi(float co_8h,  float no2_1h,   float o3_1h, float o3_4h, 
                   float so2_1h, float pm10_24h, float pm2_5_24h);
 
@@ -85,6 +86,7 @@ int united_states_aqi(float co_8h,    float no2_1h,
  *   united_states_aqi_desc(52);
  *   returns "Moderate"
  */
+
 const char* australia_aqi_desc(      int aqi);
 const char* canada_aqhi_desc(        int aqhi);
 const char* europe_caqi_desc(        int caqi);
