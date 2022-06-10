@@ -1,8 +1,13 @@
-#include <math.h>
 #include "aqi.h"
+#include <math.h>
 
 int max(int a, int b) {return a >= b ? a : b;}
 int min(int a, int b) {return a <= b ? a : b;}
+
+float truncate (float val, int decimal_places) {
+  int n = pow(10, decimal_places);
+  return floorf(val * n) / n;
+}
 
 int compute_nepm_aqi(float std, float c) {
   return (int) round(c / std * 100);
@@ -1350,9 +1355,11 @@ int south_korea_cai(float co_1h,  float no2_1h,   float o3_1h,
  * References:
  *   https://uk-air.defra.gov.uk/air-pollution/daqi?view=more-info
  *   https://en.wikipedia.org/wiki/Air_quality_index#United_Kingdom
+ *   https://uk-air.defra.gov.uk/library/reports?report_id=750
  */
 int united_kingdom_daqi(float no2_1h,   float o3_8h, float so2_15min, 
                         float pm10_24h, float pm2_5_24h) {
+  // Pollutant averages are rounded to nearest integer
   if (o3_8h >= 240.5    || no2_1h >= 600.5   || so2_15min >= 1064.5 || 
       pm2_5_24h >= 70.5 || pm10_24h >= 100.5) {
     return 10;
@@ -1388,29 +1395,334 @@ int united_kingdom_daqi(float no2_1h,   float o3_8h, float so2_15min,
 /* United States (AQI)
  *
  * References:
- *   
- *   
+ *   https://www.epa.gov/outdoor-air-quality-data/how-aqi-calculated
+ *   https://www.airnow.gov/sites/default/files/2020-05/aqi-technical-assistance-document-sept2018.pdf
+ *   https://en.wikipedia.org/wiki/Air_quality_index#United_States
  */
-int united_states_aqi();
+int united_states_aqi(float co_8h,    float no2_1h,   
+                      float o3_1h,    float o3_8h, 
+                      float so2_1h,   float so2_24h, 
+                      float pm10_24h, float pm2_5_24h) {
+  int aqi = 0;
+  float i_lo, i_hi;
+  float c_lo, c_hi;
 
-/*   co    μg/m^3, Carbon Monoxide (CO)               1 ppb = 1.1456 μg/m^3
- *   nh3   μg/m^3, Ammonia (NH3)                      1 ppb = 0.6966 μg/m^3
- *   no    μg/m^3, Nitric Oxide (NO)                  1 ppb = 1.2274 μg/m^3
- *   no2   μg/m^3, Nitrogen Dioxide (NO2)             1 ppb = 1.8816 μg/m^3
- *   o3    μg/m^3, Ground-Level Ozone (O3)            1 ppb = 1.9632 μg/m^3
- *   pb    μg/m^3, Lead (Pb)                          1 ppb = 1.9632 μg/m^3
- *   so2   μg/m^3, Sulfur Dioxide (SO2)               1 ppb = 8.4744 μg/m^3
- *   pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
- *   pm10  μg/m^3, Coarse Particulate Matter (<10μm)
- */
+  // Pollutant averages are truncated
+  co_8h     = truncate(co_8h / 1145.6, 1); // (ppm) truncate to 1 decimal place
+  no2_1h    = (int) (no2_1h / 1.8816);     // (ppb) truncate to integer
+  o3_1h     = truncate(o3_1h / 1963.2, 3); // (ppm) truncate to 3 decimal places
+  o3_8h     = truncate(o3_8h / 1963.2, 3); // (ppm) truncate to 3 decimal places
+  so2_1h    = (int) (so2_1h / 8.4744);     // (ppb) truncate to integer
+  pm10_24h  = (int) pm10_24h;              // (μg/m^3) truncate to integer
+  pm2_5_24h = truncate(pm2_5_24h, 1);      // (μg/m^3) truncate to 1 decimal place
 
-char* australia_aqi_desc();
-char* canada_aqhi_desc();
-char* europe_caqi_desc();
-char* hong_kong_aqhi_desc();
-char* india_aqi_desc();
-char* mainland_china_aqi_desc();
-char* singapore_psi_desc();
-char* south_korea_cai_desc();
-char* united_kingdom_daqi_desc();
-char* united_states_aqi_desc();
+  // co    μg/m^3, Carbon Monoxide (CO)
+  if (co_8h <= 4.4) {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 4.4;
+  } else if (co_8h <= 9.4) {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 4.5;
+    c_hi = 9.4;
+  } else if (co_8h <= 12.4) {
+    i_lo = 101;
+    i_hi = 150;
+    c_lo = 9.5;
+    c_hi = 12.4;
+  } else if (co_8h <= 15.4) {
+    i_lo = 151;
+    i_hi = 200;
+    c_lo = 12.5;
+    c_hi = 15.4;
+  } else if (co_8h <= 30.4) {
+    i_lo = 201;
+    i_hi = 300;
+    c_lo = 15.5;
+    c_hi = 30.4;
+  } else if (co_8h <= 40.4) {
+    i_lo = 301;
+    i_hi = 400;
+    c_lo = 30.5;
+    c_hi = 40.4;
+  } else if (co_8h <= 50.4) {
+    i_lo = 401;
+    i_hi = 500;
+    c_lo = 40.5;
+    c_hi = 50.4;
+  } else {
+    // index > 500
+    return 501;
+  }
+  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, co_8h));
+
+  // no2   μg/m^3, Nitrogen Dioxide (NO2)
+  if (no2_1h <= 53) {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 53;
+  } else if (no2_1h <= 100) {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 54;
+    c_hi = 100;
+  } else if (no2_1h <= 360) {
+    i_lo = 101;
+    i_hi = 150;
+    c_lo = 101;
+    c_hi = 360;
+  } else if (no2_1h <= 649) {
+    i_lo = 151;
+    i_hi = 200;
+    c_lo = 361;
+    c_hi = 649;
+  } else if (no2_1h <= 1249) {
+    i_lo = 201;
+    i_hi = 300;
+    c_lo = 350;
+    c_hi = 1249;
+  } else if (no2_1h <= 1649) {
+    i_lo = 301;
+    i_hi = 400;
+    c_lo = 1250;
+    c_hi = 1649;
+  } else if (no2_1h <= 2049) {
+    i_lo = 401;
+    i_hi = 500;
+    c_lo = 1650;
+    c_hi = 2049;
+  } else {
+    // index > 500
+    return 501;
+  }
+  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, no2_1h));
+
+  // o3    μg/m^3, Ground-Level Ozone (O3)
+  if (o3_1h >= 0.125) {
+    if (o3_1h <= 0.164) {
+      i_lo = 101;
+      i_hi = 150;
+      c_lo = 0.125;
+      c_hi = 0.164;
+    } else if (o3_1h <= 0.204) {
+      i_lo = 151;
+      i_hi = 200;
+      c_lo = 0.165;
+      c_hi = 0.204;
+    } else if (o3_1h <= 0.404) {
+      i_lo = 201;
+      i_hi = 300;
+      c_lo = 0.205;
+      c_hi = 0.404;
+    } else if (o3_1h <= 1649) {
+      i_lo = 301;
+      i_hi = 400;
+      c_lo = 1250;
+      c_hi = 1649;
+    } else if (o3_1h <= 2049) {
+      i_lo = 401;
+      i_hi = 500;
+      c_lo = 1650;
+      c_hi = 2049;
+    } else {
+      // index > 500
+      return 501;
+    }
+    aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, o3_1h));
+  }
+  if (o3_8h <= 0.200) {
+    if (o3_8h <= 0.054) {
+      i_lo = 0;
+      i_hi = 50;
+      c_lo = 0;
+      c_hi = 0.054;
+    } else if (o3_8h <= 0.070) {
+      i_lo = 51;
+      i_hi = 100;
+      c_lo = 0.055;
+      c_hi = 0.070;
+    } else if (o3_8h <= 0.085) {
+      i_lo = 101;
+      i_hi = 150;
+      c_lo = 0.071;
+      c_hi = 0.085;
+    } else if (o3_8h <= 0.105) {
+      i_lo = 151;
+      i_hi = 200;
+      c_lo = 0.086;
+      c_hi = 0.105;
+    } else {
+      // 0.106 <= o3_8h <= 0.200
+      i_lo = 201;
+      i_hi = 300;
+      c_lo = 0.106;
+      c_hi = 0.200;
+    }
+    aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, o3_8h));
+  }
+
+  // so2   μg/m^3, Sulfur Dioxide (SO2)
+  if (so2_1h <= 185) {
+    if (so2_1h <= 35) {
+      i_lo = 0;
+      i_hi = 50;
+      c_lo = 0;
+      c_hi = 35;
+    } else if (so2_1h <= 75) {
+      i_lo = 51;
+      i_hi = 100;
+      c_lo = 36;
+      c_hi = 75;
+    } else {
+      // 76 <= so2_1h <= 185
+      i_lo = 101;
+      i_hi = 150;
+      c_lo = 76;
+      c_hi = 185;
+    }
+    aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, so2_1h));
+  } else {
+    if (so2_24h <= 35) {
+      i_lo = 0;
+      i_hi = 50;
+      c_lo = 0;
+      c_hi = 35;
+    } else if (so2_24h <= 75) {
+      i_lo = 51;
+      i_hi = 100;
+      c_lo = 36;
+      c_hi = 75;
+    } else if (so2_24h <= 185) {
+      i_lo = 101;
+      i_hi = 150;
+      c_lo = 76;
+      c_hi = 185;
+    } else if (so2_24h <= 304) {
+      i_lo = 151;
+      i_hi = 200;
+      c_lo = 186;
+      c_hi = 304;
+    } else if (so2_24h <= 604) {
+      i_lo = 201;
+      i_hi = 300;
+      c_lo = 305;
+      c_hi = 604;
+    } else if (so2_24h <= 804) {
+      i_lo = 301;
+      i_hi = 400;
+      c_lo = 605;
+      c_hi = 804;
+    } else if (so2_24h <= 1004) {
+      i_lo = 401;
+      i_hi = 500;
+      c_lo = 805;
+      c_hi = 1004;
+    } else {
+      // index > 500
+      return 501;
+    }
+    aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, so2_24h));
+  }
+
+  // pm10  μg/m^3, Coarse Particulate Matter (<10μm)
+  if (pm10_24h <= 54) {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 54;
+  } else if (pm10_24h <= 154) {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 55;
+    c_hi = 154;
+  } else if (pm10_24h <= 254) {
+    i_lo = 101;
+    i_hi = 150;
+    c_lo = 155;
+    c_hi = 254;
+  } else if (pm10_24h <= 354) {
+    i_lo = 151;
+    i_hi = 200;
+    c_lo = 255;
+    c_hi = 354;
+  } else if (pm10_24h <= 424) {
+    i_lo = 201;
+    i_hi = 300;
+    c_lo = 355;
+    c_hi = 424;
+  } else if (pm10_24h <= 504) {
+    i_lo = 301;
+    i_hi = 400;
+    c_lo = 425;
+    c_hi = 504;
+  } else if (pm10_24h <= 604) {
+    i_lo = 401;
+    i_hi = 500;
+    c_lo = 505;
+    c_hi = 604;
+  } else {
+    // index > 500
+    return 501;
+  }
+  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm10_24h));
+
+  // pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
+  if (pm2_5_24h <= 12.0) {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 12.0;
+  } else if (pm2_5_24h <= 35.4) {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 12.1;
+    c_hi = 35.4;
+  } else if (pm2_5_24h <= 55.4) {
+    i_lo = 101;
+    i_hi = 150;
+    c_lo = 35.5;
+    c_hi = 55.4;
+  } else if (pm2_5_24h <= 150.4) {
+    i_lo = 151;
+    i_hi = 200;
+    c_lo = 55.5;
+    c_hi = 150.4;
+  } else if (pm2_5_24h <= 250.4) {
+    i_lo = 201;
+    i_hi = 300;
+    c_lo = 150.5;
+    c_hi = 250.4;
+  } else if (pm2_5_24h <= 350.4) {
+    i_lo = 301;
+    i_hi = 400;
+    c_lo = 250.5;
+    c_hi = 350.4;
+  } else if (pm2_5_24h <= 500.4) {
+    i_lo = 401;
+    i_hi = 500;
+    c_lo = 350.5;
+    c_hi = 500.4;
+  } else {
+    // index > 500
+    return 501;
+  }
+  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm2_5_24h));
+  
+  return aqi;
+}
+
+const char* australia_aqi_desc(int aqi) {
+  
+}
+const char* canada_aqhi_desc(int aqhi);
+const char* europe_caqi_desc(int caqi);
+const char* hong_kong_aqhi_desc(int aqhi);
+const char* india_aqi_desc(int aqi);
+const char* mainland_china_aqi_desc(int aqi);
+const char* singapore_psi_desc(int psi);
+const char* south_korea_cai_desc(int cai);
+const char* united_kingdom_daqi_desc(int daqi);
+const char* united_states_aqi_desc(int aqi);

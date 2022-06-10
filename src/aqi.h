@@ -5,11 +5,10 @@
 extern "C" {
 #endif
 
-/* Each AQI scale has a maximum value, above which there is no defined piecewise
- * function. The way these indexes are commonly denoted is by ">{AQI_MAX}" or 
- * "{AQI_MAX}+". Note: Minimum AQI for all scales is 0.
+/* Each AQI scale has a maximum value, above which AQI is typically denoted by
+ * ">{AQI_MAX}" or "{AQI_MAX}+".
  * 
- * Uncomment if you want to make use of these values
+ * Uncomment if you want to make use of these preprocessor macros
  */
 // #define AUSTRALIA_AQI_MAX       200
 // #define CANADA_AQHI_MAX         10
@@ -51,22 +50,34 @@ extern "C" {
  */
 int australia_aqi(float co_8h,  float no2_1h,   float o3_1h, float o3_4h, 
                   float so2_1h, float pm10_24h, float pm2_5_24h);
+
 int canada_aqhi(float no2_3h, float o3_3h, float pm2_5_3h);
+
 int europe_caqi(float no2_1h, float o3_1h, float pm10_1h, float pm2_5_1h);
+
 int hong_kong_aqhi(float no2_3h,  float o3_3h, float so2_3h, 
                    float pm10_3h, float pm2_5_3h);
+
 int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h, 
               float pb_24h, float so2_24h, float pm10_24h, float pm2_5_24h);
+
 int mainland_china_aqi(float co_1h, float co_24h, float no2_1h, float no2_24h,  
                        float o3_1h, float o3_8h,  float so2_1h, float so2_24h, 
                        float pm10_24h, float pm2_5_24h);
+
 int singapore_psi(float co_8h,   float no2_1h,   float o3_1h, float o3_8h, 
                   float so2_24h, float pm10_24h, float pm2_5_24h);
+                  
 int south_korea_cai(float co_1h,  float no2_1h,   float o3_1h, 
                     float so2_1h, float pm10_24h, float pm2_5_24h);
+
 int united_kingdom_daqi(float no2_1h,   float o3_8h, float so2_15min, 
                         float pm10_24h, float pm2_5_24h);
-int united_states_aqi();
+                        
+int united_states_aqi(float co_8h,    float no2_1h,   
+                      float o3_1h,    float o3_8h, 
+                      float so2_1h,   float so2_24h, 
+                      float pm10_24h, float pm2_5_24h);
 
 /* Returns the descriptor/category of an aqi value.
  * 
@@ -74,16 +85,16 @@ int united_states_aqi();
  *   united_states_aqi_desc(52);
  *   returns "Moderate"
  */
-char* australia_aqi_desc(int api);
-char* canada_aqhi_desc(int api);
-char* europe_caqi_desc(int api);
-char* hong_kong_aqhi_desc(int api);
-char* india_aqi_desc(int api);
-char* mainland_china_aqi_desc(int api);
-char* singapore_psi_desc(int api);
-char* south_korea_cai_desc(int api);
-char* united_kingdom_daqi_desc(int api);
-char* united_states_aqi_desc(int api);
+const char* australia_aqi_desc(      int aqi);
+const char* canada_aqhi_desc(        int aqhi);
+const char* europe_caqi_desc(        int caqi);
+const char* hong_kong_aqhi_desc(     int aqhi);
+const char* india_aqi_desc(          int aqi);
+const char* mainland_china_aqi_desc( int aqi);
+const char* singapore_psi_desc(      int psi);
+const char* south_korea_cai_desc(    int cai);
+const char* united_kingdom_daqi_desc(int daqi);
+const char* united_states_aqi_desc(  int aqi);
 
 #ifdef __cplusplus
 }
