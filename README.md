@@ -1,7 +1,7 @@
 # pollutant-concentration-to-aqi
 A C library that converts pollutant concentrations to Air Quality Index(AQI).
 
-Supports a 10 common AQI scales.
+Supports 10 common AQI scales.
 - Australia AQI
 - Canada AQHI
 - Europe CAQI
