@@ -4,7 +4,7 @@
 int max(int a, int b) {return a >= b ? a : b;}
 int min(int a, int b) {return a <= b ? a : b;}
 
-float truncate (float val, int decimal_places) {
+float truncate_float(float val, int decimal_places) {
   int n = pow(10, decimal_places);
   return floorf(val * n) / n;
 }
@@ -1408,13 +1408,13 @@ int united_states_aqi(float co_8h,    float no2_1h,
   float c_lo, c_hi;
 
   // Pollutant averages are truncated
-  co_8h     = truncate(co_8h / 1145.6, 1); // (ppm) truncate to 1 decimal place
+  co_8h     = truncate_float(co_8h / 1145.6, 1); // (ppm) truncate to 1 decimal place
   no2_1h    = (int) (no2_1h / 1.8816);     // (ppb) truncate to integer
-  o3_1h     = truncate(o3_1h / 1963.2, 3); // (ppm) truncate to 3 decimal places
-  o3_8h     = truncate(o3_8h / 1963.2, 3); // (ppm) truncate to 3 decimal places
+  o3_1h     = truncate_float(o3_1h / 1963.2, 3); // (ppm) truncate to 3 decimal places
+  o3_8h     = truncate_float(o3_8h / 1963.2, 3); // (ppm) truncate to 3 decimal places
   so2_1h    = (int) (so2_1h / 8.4744);     // (ppb) truncate to integer
   pm10_24h  = (int) pm10_24h;              // (μg/m^3) truncate to integer
-  pm2_5_24h = truncate(pm2_5_24h, 1);      // (μg/m^3) truncate to 1 decimal place
+  pm2_5_24h = truncate_float(pm2_5_24h, 1);      // (μg/m^3) truncate to 1 decimal place
 
   // co    μg/m^3, Carbon Monoxide (CO)
   if (co_8h <= 4.4) {
