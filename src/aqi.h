@@ -85,19 +85,20 @@ int united_states_aqi(float co_8h,    float no2_1h,
  *   returns "Moderate"
  */
 
-const char* australia_aqi_desc(      int aqi);
-const char* canada_aqhi_desc(        int aqhi);
-const char* europe_caqi_desc(        int caqi);
-const char* hong_kong_aqhi_desc(     int aqhi);
-const char* india_aqi_desc(          int aqi);
-const char* mainland_china_aqi_desc( int aqi);
-const char* singapore_psi_desc(      int psi);
-const char* south_korea_cai_desc(    int cai);
-const char* united_kingdom_daqi_desc(int daqi);
-const char* united_states_aqi_desc(  int aqi);
+const char *australia_aqi_desc(      int aqi);
+const char *canada_aqhi_desc(        int aqhi);
+const char *europe_caqi_desc(        int caqi);
+const char *hong_kong_aqhi_desc(     int aqhi);
+const char *india_aqi_desc(          int aqi);
+const char *mainland_china_aqi_desc( int aqi);
+const char *singapore_psi_desc(      int psi);
+const char *south_korea_cai_desc(    int cai);
+const char *united_kingdom_daqi_desc(int daqi);
+const char *united_states_aqi_desc(  int aqi);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
+
