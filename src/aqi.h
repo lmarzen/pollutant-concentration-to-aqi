@@ -7,19 +7,17 @@ extern "C" {
 
 /* Each AQI scale has a maximum value, above which AQI is typically denoted by
  * ">{AQI_MAX}" or "{AQI_MAX}+".
- * 
- * Uncomment if you want to make use of these preprocessor macros
  */
-// #define AUSTRALIA_AQI_MAX       200
-// #define CANADA_AQHI_MAX         10
-// #define EUROPE_CAQI_MAX         100
-// #define HONG_KONG_AQHI_MAX      10
-// #define INDIA_AQI_MAX           400
-// #define MAINLAND_CHINA_AQI_MAX  500
-// #define SINGAPORE_PSI_MAX       500
-// #define SOUTH_KOREA_CAI_MAX     500
-// #define UNITED_KINGDOM_DAQI_MAX 10
-// #define UNITED_STATES_AQI_MAX   500
+#define AUSTRALIA_AQI_MAX       200
+#define CANADA_AQHI_MAX          10
+#define EUROPE_CAQI_MAX         100
+#define HONG_KONG_AQHI_MAX       10
+#define INDIA_AQI_MAX           400
+#define MAINLAND_CHINA_AQI_MAX  500
+#define SINGAPORE_PSI_MAX       500
+#define SOUTH_KOREA_CAI_MAX     500
+#define UNITED_KINGDOM_DAQI_MAX  10
+#define UNITED_STATES_AQI_MAX   500
 
 /* Returns the Air Quality Index, rounded to the nearest integer
  * 
