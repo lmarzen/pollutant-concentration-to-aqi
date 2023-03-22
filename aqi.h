@@ -115,6 +115,89 @@ const char *south_korea_cai_desc(    int cai);
 const char *united_kingdom_daqi_desc(int daqi);
 const char *united_states_aqi_desc(  int aqi);
 
+
+static const char *AUSTRALIA_AQI_TXT[6] =
+{
+  "Very Good",
+  "Good",
+  "Fair",
+  "Poor",
+  "Very Poor",
+  "Hazardous",
+};
+static const char *CANADA_AQHI_TXT[4] = 
+{
+  "Low",
+  "Moderate",
+  "High",
+  "Very High",
+};
+static const char *EUROPE_CAQI_TXT[5] = 
+{
+  "Very Low",
+  "Low",
+  "Medium",
+  "High",
+  "Very High",
+};
+static const char *HONG_KONG_AQHI_TXT[5] = 
+{
+  "Low",
+  "Moderate",
+  "High",
+  "Very High",
+  "Hazardous",
+};
+static const char *INDIA_AQI_TXT[6] = 
+{
+  "Good",
+  "Satisfactory",
+  "Moderate",
+  "Poor",
+  "Very Poor",
+  "Severe",
+};
+static const char *MAINLAND_CHINA_AQI_TXT[6] = 
+{
+  "Excellent",
+  "Good",
+  "Lightly Polluted",
+  "Moderately Polluted",
+  "Heavily Polluted",
+  "Severely Polluted",
+};
+static const char *SINGAPORE_PSI_TXT[5] = 
+{
+  "Good",
+  "Moderate",
+  "Unhealthy",
+  "Very Unhealthy",
+  "Hazardous",
+};
+static const char *SOUTH_KOREA_CAI_TXT[4] = 
+{
+  "Good",
+  "Medium",
+  "Unhealthy",
+  "Very Unhealthy",
+};
+static const char *UNITED_KINGDOM_DAQI_TXT[4] = 
+{
+  "Low",
+  "Moderate",
+  "High",
+  "Very High",
+};
+static const char *UNITED_STATES_AQI_TXT[6] = 
+{
+  "Good",
+  "Moderate",
+  "Unhealthy for Sensitive Groups",
+  "Unhealthy",
+  "Very Unhealthy",
+  "Hazardous",
+};
+
 #ifdef __cplusplus
 }
 #endif
