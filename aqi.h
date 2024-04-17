@@ -41,7 +41,6 @@ typedef enum {
 typedef enum {
   AIR_QUALITY,
   AIR_POLLUTION,
-  NUM_AQI_DESC_TYPES
 } aqi_desc_type_t;
 
 
